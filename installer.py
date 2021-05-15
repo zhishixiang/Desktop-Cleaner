@@ -41,8 +41,8 @@ def init():
     #复制本文件至安装目录
     path = os.getcwd()
     print("复制主程序中")
-    os.system('copy %s\\Service.py D:\\Cleaner\\Service.py'%(path))
-    os.system('copy %s\\Panel.py D:\\Cleaner\\Panel.py'%(path))
+    os.system('copy %s\\Service.py D:\\Cleaner\\Service.exe'%(path))
+    os.system('copy %s\\Panel.py D:\\Cleaner\\Panel.exe'%(path))
     os.system('copy %s\\start_cleaner.exe D:\\Cleaner\\start_cleaner.exe'%(path))
     os.system('copy %s\\start_cleaner.xml D:\\Cleaner\\start_cleaner.xml'%(path))
     #向api报告安装完成(仅做统计用途)
