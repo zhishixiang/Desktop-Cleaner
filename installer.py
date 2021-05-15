@@ -1,9 +1,18 @@
 import os
 import requests
 import json
+#版本号
+version = "100"
 #第一次启动准备
 def init():
-#检测有没有文件夹，如果没有就开始安装
+    #检测更新，如果有更新则提醒
+    try:
+        latest = requests.get("http://api.blackblaze.cn/cleaner_latest").text
+        if(latest > version):
+            print("有最新版本，请前往https://hub.fastgit.org/zhishixiang/Desktop-Cleaner/releases下载")
+    except:
+        pass
+    #检测有没有文件夹，如果没有就开始安装
     folder = os.path.exists("D:\\Cleaner")
     if not folder:
         print("欢迎使用桌面清理带师")
@@ -37,6 +46,10 @@ def init():
     os.system('copy %s\\start_cleaner.exe D:\\Cleaner\\start_cleaner.exe'%(path))
     os.system('copy %s\\start_cleaner.xml D:\\Cleaner\\start_cleaner.xml'%(path))
     #向api报告安装完成(仅做统计用途)
+    try:
+        requests.get("http://api.blackblaze.cn/cleaner_install?&ver=%s"%version)
+    except:
+        pass
     #安装完成
     print("安装完成，进入配置向导")
     os.system("cls")
