@@ -1,0 +1,7 @@
+<service>
+  <id>cleaner</id>
+  <name>Desktop Cleaner</name>
+  <description>开机启动桌面清理带师</description>
+  
+  <executable>D:\Cleaer\Service.exe</executable>
+</service>

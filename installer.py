@@ -11,7 +11,7 @@ def init():
         print("正在创建安装目录")
         os.makedirs("D://Cleaner")
     else:
-        print("已安装程序，请勿重复安装！")
+        print("已安装本程序，请勿重复安装！")
         input("按下enter以退出安装")
         assert()
     #创建日志文件
@@ -24,6 +24,7 @@ def init():
     file.close
     print("创建文件白名单中")
     file = open('D://Cleaner//whitelist.txt','w')
+    file.write("desktop.ini\n")
     file.close
     #创建配置文件
     file = open('D://Cleaner//config.json','w')
@@ -33,6 +34,8 @@ def init():
     print("复制主程序中")
     os.system('copy %s\Service.py D:\Cleaner\Service.py'%(path))
     os.system('copy %s\Panel.py D:\Cleaner\Panel.py'%(path))
+    os.system('copy %s\start_cleaner.exe D:\Cleaner\start_cleaner.exe'%(path))
+    os.system('copy %s\start_cleaner.xml D:\Cleaner\start_cleaner.xml'%(path))
     #向api报告安装完成(仅做统计用途)
     #安装完成
     print("安装完成，进入配置向导")
@@ -57,11 +60,14 @@ def config():
         isDelete = True
     else:
         isDelete = False
-    if(input("是否开机启动？ y/n 默认为y") == "y"):
+    isLaunchWithBootInput = input("是否开机启动？ y/n 默认为y")
+    if(isLaunchWithBootInput == "" or isLaunchWithBootInput == "y"):
         isLaunchWithBoot = True
+        os.system("D:/Cleaner/start_cleaner install")
     else:
         isLaunchWithBoot = False
-    if(input("是否上传日志文件以改进我们的程序？我们不会提供您的数据给任何第三方 y/n 默认为y") == "y"):
+    isUploadLogInput = input("是否上传日志文件以改进我们的程序？我们不会提供您的数据给任何第三方 y/n 默认为y")
+    if(isUploadLogInput == "" or isUploadLogInput == "y"):
         isUploadLog = True
     else:
         isUploadLog = False
