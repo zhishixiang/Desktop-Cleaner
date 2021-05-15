@@ -4,38 +4,38 @@ import json
 #第一次启动准备
 def init():
 #检测有没有文件夹，如果没有就开始安装
-    folder = os.path.exists("D://Cleaner")
+    folder = os.path.exists("D:\\Cleaner")
     if not folder:
         print("欢迎使用桌面清理带师")
         input("是否安装本程序？继续安装请按enter，退出安装请按ctrl+c")
         print("正在创建安装目录")
-        os.makedirs("D://Cleaner")
+        os.makedirs("D:\\Cleaner")
     else:
         print("已安装本程序，请勿重复安装！")
         input("按下enter以退出安装")
         assert()
     #创建日志文件
     print("创建日志文件中")
-    file = open('D://Cleaner//logs.txt','w')
+    file = open('D:\\Cleaner\\logs.txt','w')
     file.close
     #创建文件时间记录
     print("创建文件时间记录中")
-    file = open('D://Cleaner//file.json','w')
+    file = open('D:\\Cleaner\\file.json','w')
     file.close
     print("创建文件白名单中")
-    file = open('D://Cleaner//whitelist.txt','w')
+    file = open('D:\\Cleaner\\whitelist.txt','w')
     file.write("desktop.ini\n")
     file.close
     #创建配置文件
-    file = open('D://Cleaner//config.json','w')
+    file = open('D:\\Cleaner\\config.json','w')
     file.close
     #复制本文件至安装目录
     path = os.getcwd()
     print("复制主程序中")
-    os.system('copy %s\Service.py D:\Cleaner\Service.py'%(path))
-    os.system('copy %s\Panel.py D:\Cleaner\Panel.py'%(path))
-    os.system('copy %s\start_cleaner.exe D:\Cleaner\start_cleaner.exe'%(path))
-    os.system('copy %s\start_cleaner.xml D:\Cleaner\start_cleaner.xml'%(path))
+    os.system('copy %s\\Service.py D:\\Cleaner\\Service.py'%(path))
+    os.system('copy %s\\Panel.py D:\\Cleaner\\Panel.py'%(path))
+    os.system('copy %s\\start_cleaner.exe D:\\Cleaner\\start_cleaner.exe'%(path))
+    os.system('copy %s\\start_cleaner.xml D:\\Cleaner\\start_cleaner.xml'%(path))
     #向api报告安装完成(仅做统计用途)
     #安装完成
     print("安装完成，进入配置向导")
@@ -51,15 +51,17 @@ def config():
         checkTime = 60
     else:
         checkTime = checkTimeInput
-    outdateTimeInput = input("您希望多少天为文件过期时间？默认为7天 ")
-    if(outdateTimeInput == ""):
-        outdateTime = 7
+    outdatedTimeInput = input("您希望多少天为文件过期时间？默认为7天 ")
+    if(outdatedTimeInput == ""):
+        outdatedTime = 7
     else:
-        outdateTime = outdateTimeInput
+        outdatedTime = outdatedTimeInput
     if(input("是否直接删除过期的文件？ y/n 默认为n") == "y"):
         isDelete = True
     else:
         isDelete = False
+        #在目录下创建回收站
+        os.mkdir("D:\\Cleaner\\recycle")
     isLaunchWithBootInput = input("是否开机启动？ y/n 默认为y")
     if(isLaunchWithBootInput == "" or isLaunchWithBootInput == "y"):
         isLaunchWithBoot = True
@@ -73,9 +75,9 @@ def config():
         isUploadLog = False
     #写入文件
     print("正在写入配置文件")
-    configFile = open("D://Cleaner//config.json")
-    config = json.dumps({'checkTime':checkTime,'outdateTime':outdateTime,'isDelete':isDelete,"isLaunchWithBoot":isLaunchWithBoot,'isUploadLog':isUploadLog})
-    with open('D://Cleaner//config.json', 'w') as json_file:
+    configFile = open("D:\\Cleaner\\config.json")
+    config = json.dumps({'checkTime':checkTime,'outdatedTime':outdatedTime,'isDelete':isDelete,"isLaunchWithBoot":isLaunchWithBoot,'isUploadLog':isUploadLog})
+    with open('D:\\Cleaner\\config.json', 'w') as json_file:
         json_file.write(config)
     #结束安装
     input("配置完成，按enter退出配置向导")

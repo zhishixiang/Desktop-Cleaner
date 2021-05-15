@@ -17,11 +17,11 @@ print(desktopPath)
 configFile = open("D:\\Cleaner\\config.json",'r')
 config = json.loads(configFile.read())
 checkTime = config["checkTime"]
-outdateTime = config["outdateTime"]
+outdatedTime = config["outdatedTime"]
 isDelete = config["isDelete"]
 isUploadLog = config["isUploadLog"]
 #获取文件白名单
-whiteListFile = open("D:/Cleaner/whitelist.txt",'r').read()
+whiteListFile = open("D:\\Cleaner\\whitelist.txt",'r').read()
 whiteList = whiteListFile.split("\n")
 #获取白名单数组最后一个值是否为空，如果是则删除最后一个值
 if(whiteList[len(whiteList)-1] == ""):
@@ -44,10 +44,35 @@ def scan():
         fileTimeName[i] = int(fileTime)
     #将字典写入文件
     fileJson = json.dumps(fileTimeName)
-    with open('D://Cleaner//file.json', 'w') as json_file:
+    with open('D:\\Cleaner\\file.json', 'w') as json_file:
         json_file.write(fileJson)
+    #记录日志
     log.write("%s scan success" % initTime)
     #新建线程
     timer = threading.Timer(checkTime*60,scan)
     timer.start()
+def checkTimedOut():
+    #获取文件列表
+    fileJson = open("D:\\Cleaner\\file.json",'r').read()
+    fileTimeName = json.loads(fileJson)
+    #创建列表
+    outdatedFile = []
+    for key,value in fileTimeName.items():
+        if(int(time.time()) - value >= 86400):
+            outdatedFile.append(key)
+    #删除文件
+    #是否为空数组，为空则不进行删除操作
+    if(outdatedFile):
+        for i in outdatedFile:
+            #是否直接删除文件
+            if(isDelete):
+                os.remove(desktopPath+"\\"+i)
+            else:
+                #移动文件至回收站
+                os.system("move %s\\%s D:\\Cleaner\\recycle"%(desktopPath,i))
+        #记录日志
+        log.write("%s remove %s file success"%(initTime,len(outdatedFile)))
+        timer = threading.Timer(checkTime*60,checkTimedOut)
+        timer.start()
 scan()
+checkTimedOut()
